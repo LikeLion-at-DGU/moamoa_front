@@ -54,6 +54,7 @@ import { GrLocation, GrRefresh, GrGallery } from "react-icons/gr";
 import { BsClock, BsHouse, BsBookmark, BsChatDots } from "react-icons/bs";
 import { IoCallOutline } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
+import { CiLocationOn } from "react-icons/ci";
 
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 
@@ -64,9 +65,28 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import axios from "axios";
 
 function StorePage() {
   const location = useLocation();
+  const lionData = location.state;
+  console.log(location);
+  const [text, setText] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/store/get_near_store"
+      );
+      setText(response.data);
+      // console.log(response.data);
+    } catch (error) {
+      console.log("err");
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   const Box = styled.div`
     width: 100%;
     height: 100%;
@@ -137,36 +157,46 @@ function StorePage() {
                 <Storeinfo3leftwrapper>
                   <Storeinfo3leftheader>
                     {/* {JSON.stringify(text,null,2)} */}
-                    {location.state.storename}
+                    {lionData.name}
                   </Storeinfo3leftheader>
 
                   <Storeinfo3place>
-                    <GrLocation />
+                    <CiLocationOn color="#5B5F66" />
+                    {lionData.road_address}
                   </Storeinfo3place>
                   <Storeinfo3time>
                     <BsClock />
+                    {lionData.operation_time}
                   </Storeinfo3time>
                   <Storeinfo3takeout>
                     <BsHouse />
+                    {lionData.store_other_data}
                   </Storeinfo3takeout>
                   <Storeinfo3call>
                     <IoCallOutline />
+                    {lionData.store_num}
                   </Storeinfo3call>
                 </Storeinfo3leftwrapper>
                 <Storeinfo3rightwrapper>
                   <Storeinfo3rightheader>메뉴정보</Storeinfo3rightheader>
-                  <Storeinfo3rightcontent></Storeinfo3rightcontent>
+                  <Storeinfo3rightcontent>
+                    {lionData.menus.map((menu, index) => (
+                      <div key={index}>
+                        {menu.name}: {menu.price}
+                      </div>
+                    ))}
+                  </Storeinfo3rightcontent>
                 </Storeinfo3rightwrapper>
               </Storeinfobox3>
               <Storeinfobox4>
                 <Storeinfo4header>
-                  방문자 리뷰
+                  방문자리뷰
                   <img src={`/img/star.png`} width="20px" height="20px" />
-                  평점:
+                  평점:{lionData.ratings}
                 </Storeinfo4header>
                 <Storeinfo4slide>
                   <Box>
-                    <Swiper
+                    {/* <Swiper
                       // install Swiper modules
                       modules={[Navigation, Pagination]}
                       spaceBetween={10}
@@ -175,31 +205,12 @@ function StorePage() {
                       onSwiper={(swiper) => swiper}
                       onSlideChange={() => console.log("slide change")}
                     >
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰1</Slidereview>
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰2</Slidereview>
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰3</Slidereview>
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰4</Slidereview>
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰5</Slidereview>
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰6</Slidereview>
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰7</Slidereview>
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Slidereview>방문자리뷰8</Slidereview>
-                      </SwiperSlide>
-                    </Swiper>
+                      {location.state.review1.map((go, ahead) => (
+                        <SwiperSlide>
+                          <Slidereview key={ahead}>{go}</Slidereview>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper> */}
                   </Box>
                 </Storeinfo4slide>
               </Storeinfobox4>

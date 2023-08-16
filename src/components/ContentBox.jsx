@@ -44,6 +44,10 @@ export default function ContentBox() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleSlideClick = (lion) => {
+    navigate(`/App/${lion.name}`, { state: lion }); // Pass the lion data as state
+  };
   const Box = styled.div`
     width: 100%;
     height: 100%;
@@ -57,11 +61,11 @@ export default function ContentBox() {
     height: 200px;
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     background-color: whitesmoke;
     border-radius: 8px;
   `;
-
   return (
     <>
       <ContentOuter>
@@ -89,25 +93,40 @@ export default function ContentBox() {
                   onSlideChange={() => console.log("slide change")}
                 >
                   {text.map((lion, idx) => (
-                    <SwiperSlide>
+                    <SwiperSlide key={idx}>
                       <button>스크랩</button>
-                      <Slide
-                        key={idx}
-                        onClick={() =>
-                          navigate(`/App/${lion.name}`, {
-                            state: {
-                              storename: lion.name,
-                              storeid: lion.store_id,
-                            },
-                          })
-                        }
-                      >
+                      <Slide key={idx} onClick={() => handleSlideClick(lion)}>
                         {/* <button onClick={navigate("/App/LookforPage")}>
                           스크랩
                         </button> */}
-                        {lion.name}
+                        {/* {lion.name}
                         <br />
-                        {lion.type}
+                        {lion.type} */}
+                        {/* {lion.images[0].image} */}
+
+                        {/* {lion.menus.map((tiger) => {
+                          return (
+                            <div key={tiger.menus}>
+                              {tiger.name}
+                              {tiger.price}
+                            </div>
+                          );
+                        })} */}
+                        <img
+                          src={`http://127.0.0.1:8000${lion.images[0].image}`}
+                          width={"100%"}
+                          height={"100%"}
+                        />
+                        {/* {lion.reviews[0].title} */}
+                        {/* {text.images.map((tiger, index) => (
+                            <div key={index}>
+                              <img
+                                src={tiger.images}
+                                width={"30px"}
+                                 height={"30px"}
+                              />
+                            </div>
+                        ))} */}
                       </Slide>
                     </SwiperSlide>
                   ))}
