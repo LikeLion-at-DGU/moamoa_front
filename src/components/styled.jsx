@@ -150,12 +150,15 @@ export const Content_Top = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 40px;
 `;
 export const Content_Top_Map = styled.div`
-  width: 60%;
-  border: 1px solid black;
-  height: 100%;
+  width: 93%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 10px;
 `;
 export const Content_Top_Scrap = styled.div`

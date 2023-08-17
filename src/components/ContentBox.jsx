@@ -16,6 +16,8 @@ import { PiForkKnife } from "react-icons/pi";
 import axios from "axios";
 // import Location from './Layout/Location';
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import Scrap_black from "../../src/components/image/scrap_black.svg";
+import Scrap_white from "../../src/components/image/scrap_white.svg";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -25,10 +27,23 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { useNavigate } from "react-router-dom";
 import { BsBookmark } from "react-icons/bs";
+import Location from "./Layout/Location";
 
 export default function ContentBox() {
   const [text, setText] = useState([]);
+  const [scrapStates, setScrapStates] = useState({});
+
   const navigate = useNavigate();
+
+  const mainpagescrap = async (store_id) => {
+    const rsp = await axios.post(
+      `http://127.0.0.1:8000/api/store/${store_id}/scrap`,
+      {},
+      { withCredentials: true }
+    );
+    fetchData();
+    console.log(rsp.data);
+  };
 
   const fetchData = async () => {
     try {
@@ -47,6 +62,12 @@ export default function ContentBox() {
   useEffect(() => {
     fetchData();
   }, []);
+  const toggleScrap = (store_id) => {
+    setScrapStates((prevState) => ({
+      ...prevState,
+      [store_id]: !prevState[store_id],
+    }));
+  };
   const Box = styled.div`
     width: 100%;
     height: 100%;
@@ -129,14 +150,9 @@ export default function ContentBox() {
       <ContentOuter>
         <Content>
           <Content_Top>
-            <Content_Top_Map>{/* <Location></Location> */}</Content_Top_Map>
-            <Content_Top_Scrap>
-              <Content_Top_Scrap_Header>
-                <BsBookmark />
-                스크랩
-              </Content_Top_Scrap_Header>
-              <Content_Top_Scrap_Body></Content_Top_Scrap_Body>
-            </Content_Top_Scrap>
+            <Content_Top_Map>
+              <Location></Location>
+            </Content_Top_Map>
           </Content_Top>
           <Content_Bottom>
             <Content_Bottom_Header>
@@ -180,9 +196,18 @@ export default function ContentBox() {
                           </Slideinfo>
                         </Slidewrapper>
                         <Sliderow>
-                          <button onClick={() => navigate("/App/LookforPage")}>
-                            a
-                          </button>
+                          <img
+                            className="scrap-black-image"
+                            src={
+                              scrapStates[lion.store_id]
+                                ? Scrap_black
+                                : Scrap_white
+                            }
+                            onClick={() => {
+                              mainpagescrap(lion.store_id);
+                              toggleScrap(lion.store_id);
+                            }}
+                          />
                         </Sliderow>
                       </Slide>
                     </SwiperSlide>

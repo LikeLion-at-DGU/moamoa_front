@@ -3,20 +3,7 @@ import React, { useState, useEffect } from "react";
 import StarModal from "../Modals/StarModal/StarModal";
 import { Content, ContentOuter } from "../components/Styled";
 import {
-  StoreBmakrwrapper,
-  StoreChat,
-  StoreChatbottom,
-  StoreChatbottominput,
-  StoreChatbottomsend,
-  StoreChatbottomsendtext,
-  StoreChatmiddle,
-  StoreChattop,
-  StoreChattoplive,
-  StoreKeyWord,
-  StoreKeyWordcontent,
-  StoreKeyWordmoamoa,
   StorePageBox,
-  Storefunc,
   Storeinfo,
   Storeinfo1,
   Storeinfo1wrapper,
@@ -45,7 +32,6 @@ import {
   Storeinfobox5rightcontent,
   Storeinfobox5rightheader,
   Storeinfobox5rightprofile,
-  Storeinfobox5rightprofileiconbox,
   Storeinfobox5rightvalue,
   Storeinfobox5wrapper,
 } from "./Pagesstyled";
@@ -88,19 +74,23 @@ function StorePage() {
     setModalOpen(false);
   };
 
-
-
   const Box = styled.div`
     width: 100%;
     height: 100%;
-    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
+  const Boxslider = styled.div`
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   `;
   const Slidenotify = styled.div`
     width: 100%;
-    height: 50px;
+    height: 30px;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -109,7 +99,7 @@ function StorePage() {
     gap: 10px;
     background-color: #eff6fc;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 10px;
   `;
   const HoverableImage = styled.img`
     width: ${(props) => props.width};
@@ -123,7 +113,7 @@ function StorePage() {
     }
   `;
   const Slidereview = styled.div`
-    width: 930px;
+    width: 1230px;
     height: 130px;
     display: flex;
     justify-content: center;
@@ -131,26 +121,45 @@ function StorePage() {
     background-color: whitesmoke;
     border-radius: 8px;
     font-size: 10px;
-    border: 1px solid black;
   `;
-  const Slidersmalleview = styled.div`
-    width: 300px;
-    height: 100px;
+
+  const SmallSliderview = styled.button`
+    width: 90%;
+    height: 120px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fcfaf7;
+  `;
+  const SmallSliderviewheader = styled.button`
+    width: 100%;
+    height: 20%;
+    background-color: #fcfaf7;
+    display: flex;
+    font-weight: 600;
+    justify-content: space-evenly;
+    border: 1px solid transparent;
+  `;
+  const SmallSliderviewcontent = styled.button`
+    width: 100%;
+    height: 80%;
+    background-color: #fcfaf7;
+    border: 1px solid transparent;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: whitesmoke;
-    border-radius: 8px;
-    font-size: 10px;
-    border: 1px solid black;
   `;
   const Valuebutton = styled.button`
-    width: "30px";
-    height: "15px";
-    border: 1px solid #273345;
+    width: 120px;
+    height: 40px;
     border-radius: 8px;
     background-color: white;
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
   `;
   return (
@@ -216,7 +225,6 @@ function StorePage() {
               <Storeinfobox3>
                 <Storeinfo3leftwrapper>
                   <Storeinfo3leftheader>
-                    {/* {JSON.stringify(text,null,2)} */}
                     {lionData.name}
                     <Valuebutton onClick={handleOpenModal}>
                       <BsPencil />
@@ -254,35 +262,55 @@ function StorePage() {
               </Storeinfobox3>
               <Storeinfobox4>
                 <Storeinfo4header>
-                  방문자 리뷰
-                  <img src={`/img/star.png`} width="20px" height="20px" />
-                  평점:{lionData.ratings}
+                  <div>방문자 리뷰</div>
+                  <div>
+                    <img src={`/img/star.png`} width="20px" height="20px" />
+                  </div>
+                  <div>평점: {lionData.ratings}</div>
                 </Storeinfo4header>
                 <Storeinfo4slide>
-                  <Box>
+                  <Boxslider>
                     <Swiper
                       // install Swiper modules
                       modules={[Navigation, Pagination]}
-                      spaceBetween={5}
+                      spaceBetween={15}
                       slidesPerView={3}
                       navigation
                       onSwiper={(swiper) => swiper}
                       onSlideChange={() => console.log("slide change")}
                     >
                       <SwiperSlide>
-                        <Slidersmalleview></Slidersmalleview>
+                        <SmallSliderview>
+                          <SmallSliderviewheader>
+                            <div>ID:{lionData.reviews[0].username}</div>
+                            <div>평점: {lionData.reviews[0].rating}</div>
+                            <div>{lionData.reviews[0].created_at}:작성</div>
+                          </SmallSliderviewheader>
+                          <SmallSliderviewcontent>
+                            {lionData.reviews[0].images[0]?.image ? (
+                              <img
+                                src={`http://127.0.0.1:8000${lionData.reviews[0].images[0].image}`}
+                                width={"100px"}
+                                height={"80px"}
+                                style={{ borderRadius: "8px" }}
+                              />
+                            ) : (
+                              "등록된 사진이 없습니다"
+                            )}
+                          </SmallSliderviewcontent>
+                        </SmallSliderview>
                       </SwiperSlide>
                       <SwiperSlide>
-                        <Slidersmalleview></Slidersmalleview>
+                        <SmallSliderview> 리뷰를 등록해주세요</SmallSliderview>
                       </SwiperSlide>
                       <SwiperSlide>
-                        <Slidersmalleview>리뷰3</Slidersmalleview>
+                        <SmallSliderview>리뷰를 등록해주세요</SmallSliderview>
                       </SwiperSlide>
                       <SwiperSlide>
-                        <Slidersmalleview>리뷰4</Slidersmalleview>
+                        <SmallSliderview>리뷰를 등록해주세요</SmallSliderview>
                       </SwiperSlide>
                     </Swiper>
-                  </Box>
+                  </Boxslider>
                 </Storeinfo4slide>
               </Storeinfobox4>
               <Storeinfobox5>
@@ -308,10 +336,13 @@ function StorePage() {
                                 {lionData.reviews[0].images[0]?.image ? (
                                   <img
                                     src={`http://127.0.0.1:8000${lionData.reviews[0].images[0].image}`}
-                                    width={"100%"}
-                                    height={"100%"}
+                                    width={"120px"}
+                                    height={"90px"}
+                                    style={{ borderRadius: "8px" }}
                                   />
-                                ) : null}
+                                ) : (
+                                  "등록된 사진이 없습니다"
+                                )}
                               </Storeinfobox5picleft>
                               <Storeinfobox5picright>
                                 등록된 사진이 없습니다
@@ -321,7 +352,6 @@ function StorePage() {
                           <Storeinfobox5right>
                             <Storeinfobox5rightheader>
                               <Storeinfobox5rightprofile>
-                                <Storeinfobox5rightprofileiconbox></Storeinfobox5rightprofileiconbox>
                                 {lionData.reviews[0].username}
                               </Storeinfobox5rightprofile>
                               <Storeinfobox5rightvalue>
@@ -329,7 +359,7 @@ function StorePage() {
                               </Storeinfobox5rightvalue>
                             </Storeinfobox5rightheader>
                             <Storeinfobox5rightcontent>
-                              {lionData.reviews[0].content}
+                              "{lionData.reviews[0].content}"
                             </Storeinfobox5rightcontent>
                           </Storeinfobox5right>
                         </Storeinfobox5wrapper>
@@ -339,36 +369,12 @@ function StorePage() {
                 </Box>
               </Storeinfobox5>
             </Storeinfo>
-            {/* <Storefunc>
-              <StoreChat>
-                <StoreChattop>
-                  <StoreChattoplive>
-                    <BsChatDots fontSize={"20px"} />
-                    실시간 채팅
-                  </StoreChattoplive>
-                  <GrRefresh fontSize={"20px"} style={{ color: "white" }} />
-                </StoreChattop>
-                <StoreChatmiddle></StoreChatmiddle>
-                <StoreChatbottom>
-                  <StoreChatbottominput>
-                    <input placeholder="메세지를 입력해주세요"></input>
-                  </StoreChatbottominput>
-                  <StoreChatbottomsend>
-                    <GrGallery />
-                    <StoreChatbottomsendtext>보내기</StoreChatbottomsendtext>
-                  </StoreChatbottomsend>
-                </StoreChatbottom>
-              </StoreChat>
-              <StoreKeyWord>
-                <StoreKeyWordmoamoa>모아모아</StoreKeyWordmoamoa>
-                <StoreKeyWordcontent></StoreKeyWordcontent>
-              </StoreKeyWord>
-            </Storefunc> */}
           </StorePageBox>
         </Content>
       </ContentOuter>
-      {isModalOpen && <StarModal onClose={handleCloseModal} storeId={lionData.store_id} />}
-
+      {isModalOpen && (
+        <StarModal onClose={handleCloseModal} storeId={lionData.store_id} />
+      )}
     </>
   );
 }
